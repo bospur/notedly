@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server-express');
 
 module.exports = gql`
-    scalar DateTime
+    
     type NoteFeed {
         notes: [Note]!
         cursor: String!
@@ -11,8 +11,8 @@ module.exports = gql`
         id: ID!
         content: String!
         author: User!
-        createdAt: DateTime!
-        updatedAt: DateTime!
+        createdAt: String!
+        updatedAt: String!
         favoriteCount: Int!
         favoritedBy: [User!]
     }
