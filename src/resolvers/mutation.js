@@ -96,12 +96,13 @@ module.exports = {
         });
 
         if (!user) {
-            throw new AuthenticationError('Error sigining in');
+            throw new AuthenticationError('wrong email or password');
         }
 
         const valid = await bcrypt.compare(password, user.password);
+
         if (!valid) {
-            throw new AuthenticationError('Error siginig in');
+            throw new AuthenticationError('wrong email or password');
         }
 
         return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
