@@ -62,6 +62,7 @@ module.exports = {
     },
     signUp: async (parent, { username, email, password }, { models }) => {
         email = email.trim().toLowerCase();
+        username = username.toLowerCase();
         const hashed = await bcrypt.hash(password, 10);
         const avatar = gravatar(email);
         try {
@@ -73,8 +74,16 @@ module.exports = {
             });
             return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         } catch (err) {
-            console.log(err);
-            throw new Error('Error creating account');
+            
+            if (err.toString().indexOf('email') >= 0) {
+                throw new Error('This email is already in use');
+            }
+
+            if (err.toString().indexOf('username') >= 0) {
+                throw new Error('This username is already in use');
+            }
+
+            throw new Error(`Error creating account: ${err}`);
         }
     },
     signIn: async (parent, { username, email, password }, { models }) => {
